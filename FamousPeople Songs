@@ -1,0 +1,27 @@
+
+Create Table FamousPeople (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, country TEXT);
+
+Insert into FamousPeople Values (1,"Bad Bunny", "Puerto Rico");
+Insert into FamousPeople Values (2, "Shakira", "Colombia");
+Insert into FamousPeople Values (3, "Cafe Tacuba", "Mexico");
+Insert into FamousPeople Values (4, "Christian Nodal", "Mexico");
+Insert into FamousPeople Values (5, "Karol G", "Mexico");
+Insert into FamousPeople Values (6, "Mon Laferte", "Chile");
+
+Create Table Song (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+title TEXT, genre Text, artist_id INTEGER);
+Insert into Song Values (1,"Safaera", "Reaggeton",1);
+Insert into Song Values (2,"Eres", "Alternative",3);
+Insert into Song Values (3,"Pies Descalsos", "Rock",2);
+Insert into Song Values (4,"El Makinon", "Pop",5);
+Insert into Song Values (5,"Aqui Abajo", "Regional",4);
+Insert into Song Values (6,"La Tortura", "Pop",2);
+Insert into Song Values (7,"Tu Falta de Querer", "Pop",5);
+Insert into Song Values (8, "Rabiosa", "Pop",2);
+Insert into Song Values (9, "Amarrame", "Pop",6);
+Insert into Song Values (10, "Ojos Bonitos", "Reaggeton",1);
+
+
+Select Song.title, Song.genre, FamousPeople.name from Song 
+Left outer join FamousPeople
+on FamousPeople.id = Song.artist_id;
