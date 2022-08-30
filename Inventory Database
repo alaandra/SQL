@@ -1,0 +1,70 @@
+--Using a dataset with customers account numbers and order ids and a datasest with stores sales I  was able to answer the following questions
+
+
+--How many orders were placed in January?
+SELECT COUNT (orderid) FROM BIT_DB.JanSales;
+
+--How many of those orders were for an iPhone?
+SELECT COUNT(orderID)
+From BIT_DB.JanSales
+Where Product = "iPhone";
+
+--Select the customer account numbers for all the orders that were placed in February. 
+SELECT acctnum from BIT_DB.customers
+Inner join BIT_DB.FebSales
+on order_id = orderid;
+
+--Which product was the cheapest one sold in January, and what was the price?
+SELECT distinct Product, price
+FROM BIT_DB.JanSales
+WHERE  price in (SELECT min(price) FROM BIT_DB.JanSales);
+
+--What is the total revenue for each product sold in January?
+SELECT SUM(Quantity)*Price, Product
+From BIT_DB.JanSales
+Group By Product;
+
+--Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
+SELECT SUM(Quantity)*Price, Product, Quantity
+From BIT_DB.FebSales
+WHERE location = "548 Lincoln St, Seattle, WA 98101"; 
+
+--How many customers ordered more than 2 products at a time, and what was the average amount spent for those customers? 
+SELECT COUNT (cust.acctnum), avg(feb.quantity*price) From BIT_DB.FebSales Feb
+LEFT JOIN BIT_DB.customers cust
+on cust.order_id = Feb.orderid
+Where Feb.Quantity > 2;
+
+--List all the products sold in Los Angeles in February, and include how many of each were sold.
+SELECT DISTINCT Product, SUM(Quantity)
+FROM BIT_DB.FebSales
+WHERE location like '%Los Angeles%'
+GROUP By Product;
+
+--Which locations in New York received at least 3 orders in January, and how many orders did they each receive?
+SELECT DISTINCT location, COUNT(orderID) from BIT_DB.JanSales
+WHERE  location like '%NY%'
+Group By location
+Having COUNT (orderID)>=3;
+
+--How many of each type of headphone were sold in February?
+SELECT DISTINCT Product, SUM(Quantity) as Quantity
+FROM BIT_DB.FebSales
+WHERE Product like '%headphone%'
+Group by Product;
+
+--What was the average amount spent per account in February?
+SELECT AVG (quantity*price) from BIT_DB.FebSales Feb
+INNER JOIN BIT_DB.customers cust
+Where order_id=OrderID;
+
+--What was the average quantity of products purchased per account in February?
+SELECT avg(quantity) from BIT_DB.FebSales Feb
+INNER JOIN BIT_DB.customers cust
+WHERE order_id=orderID;
+
+--Which product brought in the most revenue in January and how much revenue did it bring in total?
+SELECT sum(Quantity*price)as Revenue, product from BIT_DB.JanSales
+Group By product
+Order By Revenue desc
+Limit 1;
